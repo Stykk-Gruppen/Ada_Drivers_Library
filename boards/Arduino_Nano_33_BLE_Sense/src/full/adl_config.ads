@@ -10,9 +10,9 @@ package ADL_Config is
    Has_ZFP_Runtime                : constant String  := "True";              -- From board definition
    Has_Ravenscar_SFP_Runtime      : constant String  := "False";             -- From board definition
    Has_Ravenscar_Full_Runtime     : constant String  := "True";              -- From board definition
-   Runtime_Profile                : constant String  := "zfp";               -- From command line
+   Runtime_Profile                : constant String  := "ravenscar-full";    -- From command line
    Runtime_Name_Suffix            : constant String  := "nrf52840";          -- From board definition
-   Runtime_Name                   : constant String  := "zfp-nrf52840";      -- From default value
+   Runtime_Name                   : constant String  := "ravenscar-full-nrf52840"; -- From default value
    Use_Startup_Gen                : constant Boolean := False;               -- From command line
    Boot_Memory                    : constant String  := "flash";             -- From default value
    Max_Path_Length                : constant         := 1024;                -- From default value

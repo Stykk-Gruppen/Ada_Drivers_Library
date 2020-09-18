@@ -4,6 +4,7 @@ from subprocess import check_call
 
 
 BOARDS = {
+    'Arduino_Nano_33_BLE_Sense':          { 'rts_profiles': ['zfp', 'ravenscar-full']},
     'Crazyflie':           { 'rts_profiles': ['ravenscar-sfp', 'ravenscar-full']},
     'HiFive1':             { 'rts_profiles': ['zfp']},
     'HiFive1_rev_B':       { 'rts_profiles': ['zfp']},
@@ -38,7 +39,8 @@ FOLDERS = {'Crazyflie': 'crazyflie',
            'STM32F769_Discovery': 'stm32f769_discovery',
            'NUCLEO_F446ZE':       'nucleo_f446ze',
            'Feather_STM32F405':   'feather_stm32f405',
-           'STM32_H405':          'stm32_h405'}
+           'STM32_H405':          'stm32_h405',
+           'Arduino_Nano_33_BLE_Sense': 'Arduino_Nano_33_BLE_Sense'}
 
 USE_STARTUP_GEN = ['HiFive1', 'HiFive1_rev_B', 'MicroBit', 'NRF52_DK']
 
