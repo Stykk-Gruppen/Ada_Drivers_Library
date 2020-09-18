@@ -29,20 +29,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with nRF.Device; use nRF.Device;
-with nRF.GPIO; use nRF.GPIO;
+package body Arduino_Nano_33_BLE_SENSE.LEDs is
 
-package NRF52_DK.LEDs is
+   --LEDs : array (1) of GPIO_Point := (LED);
 
-   subtype User_LED is GPIO_Point;
-   LED1 : User_LED renames P17;
-   LED2 : User_LED renames P18;
-   LED3 : User_LED renames P19;
-   LED4 : User_LED renames P20;
+   procedure Initialize_LED is
+      Conf : GPIO_Configuration;
+   begin
+      Conf.Mode := Mode_Out;
+      Conf.Resistors := No_Pull;
+      LED.Configure_IO (Conf);
+      LED.Set;
+   end Initialize_LED;
 
-   procedure Initialize_LEDs;
+   procedure Turn_On (This : in out User_LED) is
+   begin
+      This.Clear;
+   end Turn_On;
 
-   procedure Turn_On (This : in out User_LED);
-   procedure Turn_Off (This : in out User_LED);
+   procedure Turn_Off (This : in out User_LED) is
+   begin
+      This.Set;
+   end Turn_Off;
 
-end NRF52_DK.LEDs;
+end Arduino_Nano_33_BLE_SENSE.LEDs;
