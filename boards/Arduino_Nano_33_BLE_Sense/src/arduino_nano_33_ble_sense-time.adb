@@ -36,7 +36,7 @@ with nRF.Events;
 with nRF.Interrupts;
 with System.Machine_Code; use System.Machine_Code;
 
-package body NRF52_DK.Time is
+package body Arduino_Nano_33_Ble_Sense.Time is
 
    package Clocks renames nRF.Clock;
 

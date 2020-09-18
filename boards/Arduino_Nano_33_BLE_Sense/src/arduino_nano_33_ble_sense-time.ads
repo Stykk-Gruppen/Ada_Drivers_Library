@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                    Copyright (C) 2017-2020, AdaCore                      --
+--                    Copyright (C) 2016-2020, AdaCore                      --
 --                                                                          --
 --  Redistribution and use in source and binary forms, with or without      --
 --  modification, are permitted provided that the following conditions are  --
@@ -28,81 +28,54 @@
 --   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.   --
 --                                                                          --
 ------------------------------------------------------------------------------
-j
-with nRF.Device; use nRF.Device;
-with nRF.GPIO; use nRF.GPIO;
 
-package NRF52_DK.IOs is
+with HAL;      use HAL;
+with HAL.Time;
 
-   type Pin_Id is range 0 .. 31;
+package Arduino_Nano_33_Ble_Sense.Time is
 
-   type IO_Features is (Digital, Analog);
+   subtype Time_Ms is UInt64;
 
-   function Supports (Pin : Pin_Id; Feature : IO_Features) return Boolean is
-     (case Feature is
-         when Digital => (case Pin is
-                             when 0 .. 2 | 5 .. 27 => True,
-                             when others           => False),
-         when Analog  => (case Pin is
-                             when 3 .. 4 | 28 .. 31 => True,
-                             when others            => False));
+   function Clock return Time_Ms;
 
-   procedure Set (Pin : Pin_Id; Value : Boolean)
-     with Pre => Supports (Pin, Digital);
+   procedure Delay_Ms (Milliseconds : UInt64);
 
-   function Set (Pin : Pin_Id) return Boolean
-     with Pre => Supports (Pin, Digital);
+   procedure Sleep (Milliseconds : UInt64) renames Delay_Ms;
 
-   type Analog_Value is range 0 .. 4095;
+   function Tick_Period return Time_Ms;
 
-   procedure Set_Analog_Period_Us (Period : Natural);
-   --  Set the period (in microseconds) of the PWM signal for all analog output
-   --  pins.
+   type Tick_Callback is access procedure;
 
-   procedure Write (Pin : Pin_Id; Value : Analog_Value)
-     with Pre => Supports (Pin, Analog);
+   function Tick_Subscriber (Callback : not null Tick_Callback) return Boolean;
+   --  Return True if callback is already a tick event subscriber
 
-   function Analog (Pin : Pin_Id) return Analog_Value
-     with Pre => Supports (Pin, Analog);
-   --  Read the voltagle applied to the pin. 0 means 0V 1023 means 3.3V
+   function Tick_Subscribe (Callback : not null Tick_Callback) return Boolean
+     with Pre  => not Tick_Subscriber (Callback),
+          Post => (if Tick_Subscribe'Result then Tick_Subscriber (Callback));
+   --  Subscribe a callback to the tick event. The function return True on
+   --  success, False if there's no more room for subscribers.
 
+   function Tick_Unsubscribe (Callback : not null Tick_Callback) return Boolean
+     with Pre  => Tick_Subscriber (Callback),
+          Post => (if Tick_Unsubscribe'Result then not Tick_Subscriber (Callback));
+   --  Unsubscribe a callback to the tick event. The function return True on
+   --  success, False if the callback was not a subscriber.
+
+   function HAL_Delay return not null HAL.Time.Any_Delays;
 private
 
-   --  Mapping between pin id and GPIO_Points
+   type MB_Delays is new HAL.Time.Delays with null record;
 
-   Points : array (Pin_Id) of GPIO_Point :=
-     (0  => P00,
-      1  => P01,
-      2  => P02,
-      3  => P03,
-      4  => P04,
-      5  => P05,
-      6  => P06,
-      7  => P07,
-      8  => P08,
-      9  => P09,
-      10 => P10,
-      11 => P11,
-      12 => P12,
-      13 => P13,
-      14 => P14,
-      15 => P15,
-      16 => P16,
-      17 => P17,
-      18 => P18,
-      19 => P19,
-      20 => P20,
-      21 => P21,
-      22 => P22,
-      23 => P23,
-      24 => P24,
-      25 => P25,
-      26 => P26,
-      27 => P27,
-      28 => P28,
-      29 => P29,
-      30 => P30,
-      31 => P31
-     );
+   overriding
+   procedure Delay_Microseconds (This : in out MB_Delays;
+                                 Us   : Integer);
 
-end NRF52_DK.IOs;
+   overriding
+   procedure Delay_Milliseconds (This : in out MB_Delays;
+                                 Ms   : Integer);
+
+   overriding
+   procedure Delay_Seconds      (This : in out MB_Delays;
+                                 S    : Integer);
+
+end Arduino_Nano_33_Ble_Sense.Time;

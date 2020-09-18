@@ -32,7 +32,7 @@
 with nRF.Device;
 with nRF.GPIO;
 
-package NRF52_DK is
+package Arduino_Nano_33_Ble_Sense is
 
    --  DK Headers are "Arduino compatible" these names reflect the
    --  Arduino locations of these peripherals
@@ -47,4 +47,4 @@ package NRF52_DK is
    DK_UART_TX : nRF.GPIO.GPIO_Point renames nRF.Device.P12;
    DK_UART_RX : nRF.GPIO.GPIO_Point renames nRF.Device.P11;
 
-end NRF52_DK;
+end Arduino_Nano_33_Ble_Sense;

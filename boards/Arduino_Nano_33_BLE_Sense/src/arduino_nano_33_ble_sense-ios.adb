@@ -38,7 +38,7 @@ with nRF.GPIO.Tasks_And_Events; use nRF.GPIO.Tasks_And_Events;
 with nRF.Events;                use nRF.Events;
 with nRF.Interrupts;            use nRF.Interrupts;
 
-package body NRF52_DK.IOs is
+package body Arduino_Nano_33_Ble_Sense.IOs is
 
    --  The analog out feature is implemented as PWM signal. To generate the PWM
    --  signals we use a timer with the configuration described bellow.
@@ -434,4 +434,4 @@ package body NRF52_DK.IOs is
       return Analog_Value (Result);
    end Analog;
 
-end NRF52_DK.IOs;
+end Arduino_Nano_33_Ble_Sense.IOs;

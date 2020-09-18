@@ -29,25 +29,80 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package NRF52_DK.Buttons is
+with nRF.Device; use nRF.Device;
+with nRF.GPIO; use nRF.GPIO;
 
-   type Button_State is (Pressed, Released);
-   type Button_Id is (Button_1, Button_2, Button_3, Button_4);
+package Arduino_Nano_33_Ble_Sense.IOs is
 
-   function State (Button : Button_Id) return Button_State;
-   --  Indicate the current state of the requested button
+   type Pin_Id is range 0 .. 31;
 
-   type Button_Callback is access procedure (Button : Button_Id;
-                                             State  : Button_State);
+   type IO_Features is (Digital, Analog);
 
-   function Subscribe (Callback : not null Button_Callback) return Boolean;
-   --  Add Callback to the list of subscribers. Return False if Callback cannot
-   --  be added.
-   --
-   --  Callback will be executed each time a button state changes.
+   function Supports (Pin : Pin_Id; Feature : IO_Features) return Boolean is
+     (case Feature is
+         when Digital => (case Pin is
+                             when 0 .. 2 | 5 .. 27 => True,
+                             when others           => False),
+         when Analog  => (case Pin is
+                             when 3 .. 4 | 28 .. 31 => True,
+                             when others            => False));
 
-   function Unsubscribe (Callback : not null Button_Callback) return Boolean;
-   --  Remove Callback from the list of subscribers. Return False if Callback
-   --  is not in the list of sucbscribers.
+   procedure Set (Pin : Pin_Id; Value : Boolean)
+     with Pre => Supports (Pin, Digital);
 
-end NRF52_DK.Buttons;
+   function Set (Pin : Pin_Id) return Boolean
+     with Pre => Supports (Pin, Digital);
+
+   type Analog_Value is range 0 .. 4095;
+
+   procedure Set_Analog_Period_Us (Period : Natural);
+   --  Set the period (in microseconds) of the PWM signal for all analog output
+   --  pins.
+
+   procedure Write (Pin : Pin_Id; Value : Analog_Value)
+     with Pre => Supports (Pin, Analog);
+
+   function Analog (Pin : Pin_Id) return Analog_Value
+     with Pre => Supports (Pin, Analog);
+   --  Read the voltagle applied to the pin. 0 means 0V 1023 means 3.3V
+
+private
+
+   --  Mapping between pin id and GPIO_Points
+
+   Points : array (Pin_Id) of GPIO_Point :=
+     (0  => P00,
+      1  => P01,
+      2  => P02,
+      3  => P03,
+      4  => P04,
+      5  => P05,
+      6  => P06,
+      7  => P07,
+      8  => P08,
+      9  => P09,
+      10 => P10,
+      11 => P11,
+      12 => P12,
+      13 => P13,
+      14 => P14,
+      15 => P15,
+      16 => P16,
+      17 => P17,
+      18 => P18,
+      19 => P19,
+      20 => P20,
+      21 => P21,
+      22 => P22,
+      23 => P23,
+      24 => P24,
+      25 => P25,
+      26 => P26,
+      27 => P27,
+      28 => P28,
+      29 => P29,
+      30 => P30,
+      31 => P31
+     );
+
+end Arduino_Nano_33_Ble_Sense.IOs;
