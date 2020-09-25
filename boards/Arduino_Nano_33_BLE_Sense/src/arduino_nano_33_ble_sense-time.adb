@@ -243,4 +243,4 @@ package body Arduino_Nano_33_Ble_Sense.Time is
 
 begin
    Initialize;
-end NRF52_DK.Time;
+end Arduino_Nano_33_Ble_Sense.Time;

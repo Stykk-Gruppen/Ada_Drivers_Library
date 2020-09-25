@@ -282,11 +282,11 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
       nRF.Interrupts.Enable (PWM_Interrupt);
    end Init_PWM_Timer;
 
-   ---------
-   -- Set --
-   ---------
+   ------------------
+   -- DigitalWrite --
+   ------------------
 
-   procedure Set
+   procedure DigitalWrite
      (Pin : Pin_Id;
       Value : Boolean)
    is
@@ -312,13 +312,13 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
       else
          Pt.Clear;
       end if;
-   end Set;
+   end DigitalWrite;
 
-   ---------
-   -- Set --
-   ---------
+   -----------------
+   -- DigitalRead --
+   -----------------
 
-   function Set
+   function DigitalRead
      (Pin : Pin_Id)
       return Boolean
    is
@@ -341,7 +341,7 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
       end if;
 
       return Pt.Set;
-   end Set;
+   end DigitalRead;
 
    --------------------------
    -- Set_Analog_Period_Us --
@@ -357,11 +357,11 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
       end loop;
    end Set_Analog_Period_Us;
 
-   -----------
-   -- Write --
-   -----------
+   -----------------
+   -- AnalogWrite --
+   -----------------
 
-   procedure Write
+   procedure AnalogWrite
      (Pin : Pin_Id;
       Value : Analog_Value)
    is
@@ -401,13 +401,13 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
 
       PWMs (PWM_Alloc (Pin)).Pulse_Width := Value;
       PWMs (PWM_Alloc (Pin)).Cmp := To_Compare_Value (Value);
-   end Write;
+   end AnalogWrite;
 
-   ------------
-   -- Analog --
-   ------------
+   ----------------
+   -- AnalogRead --
+   ----------------
 
-   function Analog
+   function AnalogRead
      (Pin : Pin_Id)
       return Analog_Value
    is
@@ -432,6 +432,6 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
                             Ref   => VDD_One_Forth,
                             Res   => Res_10bit);
       return Analog_Value (Result);
-   end Analog;
+   end AnalogRead;
 
 end Arduino_Nano_33_Ble_Sense.IOs;
