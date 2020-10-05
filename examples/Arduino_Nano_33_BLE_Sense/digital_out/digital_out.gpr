@@ -1,4 +1,4 @@
-with "/home/stian/code/ada/Ada_Drivers_Library/boards/Arduino_Nano_33_BLE_Sense/arduino_nano_33_ble_sense_full.gpr";
+with "../../../boards/Arduino_Nano_33_BLE_Sense/arduino_nano_33_ble_sense_full.gpr";
 
 project Digital_Out is
    for Runtime ("ada") use arduino_nano_33_ble_sense_full'Runtime ("Ada");
