@@ -41,7 +41,7 @@ package Arduino_Nano_33_Ble_Sense.IOs is
    function Supports (Pin : Pin_Id; Feature : IO_Features) return Boolean is
      (case Feature is
          when Digital => (case Pin is
-                             when 0 .. 2 | 5 .. 27 => True,
+                             when 0 .. 31 => True,
                              when others           => False),
          when Analog  => (case Pin is
                              when 3 .. 4 | 28 .. 31 => True,
