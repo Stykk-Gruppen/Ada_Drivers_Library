@@ -62,7 +62,7 @@ library project Arduino_Nano_33_BLE_Sense_Full is
 
    Linker_Switches := ();
    for Target use "arm-eabi";
-   for Runtime ("Ada") use "ravenscar-full-nrf52840-v2";
+   for Runtime ("Ada") use "ravenscar-full-nrf52840";
 
    package Device_Configuration is
       for CPU_Name use "ARM Cortex-M4F";

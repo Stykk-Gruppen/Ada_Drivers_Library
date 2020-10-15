@@ -64,7 +64,7 @@ package body Arduino_Nano_33_BLE_SENSE.Servo is
          Analog_Period_Set := True;
       end if;
 
-      Arduino_Nano_33_Ble_Sense.IOs.AnalogWrite (Pin, To_PWM (Setpoint));
+      Arduino_Nano_33_Ble_Sense.IOs.AnalogWrite (Pin, 127);--To_PWM (Setpoint));
    end Go;
 
 end Arduino_Nano_33_BLE_SENSE.Servo;
