@@ -44,7 +44,7 @@ package Arduino_Nano_33_Ble_Sense.IOs is
                              when 0 .. 47 => True,
                              when others           => False),
          when Analog  => (case Pin is
-                             when 3 .. 4 | 28 .. 31 => True,
+                             when 3 .. 5 | 28 .. 31 => True,
                              when others            => False));
 
    procedure DigitalWrite (Pin : Pin_Id; Value : Boolean)
@@ -53,7 +53,7 @@ package Arduino_Nano_33_Ble_Sense.IOs is
    function DigitalRead (Pin : Pin_Id) return Boolean
      with Pre => Supports (Pin, Digital);
 
-   type Analog_Value is range 0 .. 4095;
+   type Analog_Value is range 0 .. 1023;
 
    procedure Set_Analog_Period_Us (Period : Natural);
    --  Set the period (in microseconds) of the PWM signal for all analog output
