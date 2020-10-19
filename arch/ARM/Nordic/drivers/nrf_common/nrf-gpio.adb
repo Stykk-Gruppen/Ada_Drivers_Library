@@ -32,11 +32,18 @@
 with NRF_SVD.GPIO; use NRF_SVD.GPIO;
 
 package body nRF.GPIO is
+   --Pin 32-47 should be changed to 0-15 with P1.
+   Port1PinOffset : constant Integer := 32;
 
    overriding
    function Mode (This : GPIO_Point) return HAL.GPIO.GPIO_Mode is
-      CNF : PIN_CNF_Register renames GPIO_Periph.PIN_CNF (This.Pin);
+      CNF : PIN_CNF_Register renames GPIO_Periph.PIN_CNF (This.Pin MOD Port1PinOffset);
    begin
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         CNF := P1_Periph.PIN_CNF (This.Pin MOD Port1PinOffset);
+      end if;
+      ----------------Tarald Edit End--------------------------
       case CNF.DIR is
          when Input => return HAL.GPIO.Input;
          when Output => return HAL.GPIO.Output;
@@ -51,8 +58,13 @@ package body nRF.GPIO is
    procedure Set_Mode (This : in out GPIO_Point;
                        Mode : HAL.GPIO.GPIO_Config_Mode)
    is
-      CNF : PIN_CNF_Register renames GPIO_Periph.PIN_CNF (This.Pin);
+      CNF : PIN_CNF_Register renames GPIO_Periph.PIN_CNF (This.Pin MOD Port1PinOffset);
    begin
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         CNF := P1_Periph.PIN_CNF (This.Pin MOD Port1PinOffset);
+      end if;
+      ----------------Tarald Edit End--------------------------
       CNF.DIR := (case Mode is
                      when HAL.GPIO.Input  => Input,
                      when HAL.GPIO.Output => Output);
@@ -71,7 +83,13 @@ package body nRF.GPIO is
       return Boolean
    is
    begin
-      return GPIO_Periph.IN_k.Arr (This.Pin) = High;
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         return P1_Periph.IN_k.Arr (This.Pin MOD Port1PinOffset) = High;
+      else
+         return GPIO_Periph.IN_k.Arr (This.Pin) = High;
+      end if;
+     ----------------Tarald Edit End--------------------------
    end Set;
 
    -------------------
@@ -83,11 +101,21 @@ package body nRF.GPIO is
                            return HAL.GPIO.GPIO_Pull_Resistor
    is
    begin
-      case GPIO_Periph.PIN_CNF (This.Pin).PULL is
+     ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         case P1_Periph.PIN_CNF (This.Pin MOD Port1PinOffset).PULL is
          when Disabled => return HAL.GPIO.Floating;
          when Pulldown => return HAL.GPIO.Pull_Down;
          when Pullup => return HAL.GPIO.Pull_Up;
-      end case;
+         end case;
+      else
+         case GPIO_Periph.PIN_CNF (This.Pin).PULL is
+         when Disabled => return HAL.GPIO.Floating;
+         when Pulldown => return HAL.GPIO.Pull_Down;
+         when Pullup => return HAL.GPIO.Pull_Up;
+         end case;
+      end if;
+      ----------------Tarald Edit End--------------------------
    end Pull_Resistor;
 
    -----------------------
@@ -99,11 +127,21 @@ package body nRF.GPIO is
                                 Pull : HAL.GPIO.GPIO_Pull_Resistor)
    is
    begin
-      GPIO_Periph.PIN_CNF (This.Pin).PULL :=
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         P1_Periph.PIN_CNF (This.Pin MOD Port1PinOffset).PULL :=
         (case Pull is
             when HAL.GPIO.Floating  => Disabled,
             when HAL.GPIO.Pull_Down => Pulldown,
             when HAL.GPIO.Pull_Up   => Pullup);
+      else
+         GPIO_Periph.PIN_CNF (This.Pin).PULL :=
+        (case Pull is
+            when HAL.GPIO.Floating  => Disabled,
+            when HAL.GPIO.Pull_Down => Pulldown,
+            when HAL.GPIO.Pull_Up   => Pullup);
+      end if;
+      ----------------Tarald Edit End--------------------------
    end Set_Pull_Resistor;
 
    ---------
@@ -114,7 +152,13 @@ package body nRF.GPIO is
      (This : in out GPIO_Point)
    is
    begin
-      GPIO_Periph.OUT_k.Arr (This.Pin) := High;
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         P1_Periph.OUT_k.Arr (This.Pin MOD Port1PinOffset) := High;
+      else
+         GPIO_Periph.OUT_k.Arr (This.Pin) := High;
+      end if;
+      ----------------Tarald Edit End--------------------------
    end Set;
 
    -----------
@@ -125,7 +169,13 @@ package body nRF.GPIO is
      (This : in out GPIO_Point)
    is
    begin
-      GPIO_Periph.OUT_k.Arr (This.Pin) := Low;
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         P1_Periph.OUT_k.Arr (This.Pin MOD Port1PinOffset) := Low;
+      else
+         GPIO_Periph.OUT_k.Arr (This.Pin) := Low;
+      end if;
+      ----------------Tarald Edit End--------------------------
    end Clear;
 
    ------------
@@ -151,8 +201,15 @@ package body nRF.GPIO is
      (This   : GPIO_Point;
       Config : GPIO_Configuration)
    is
-      CNF : PIN_CNF_Register renames GPIO_Periph.PIN_CNF (This.Pin);
+      CNF : PIN_CNF_Register renames GPIO_Periph.PIN_CNF (This.Pin MOD Port1PinOffset);
    begin
+      ----------------Tarald Edit Start------------------------
+      if This.Pin > 31 then
+         CNF := P1_Periph.PIN_CNF (This.Pin MOD Port1PinOffset);
+      else
+         CNF := GPIO_Periph.PIN_CNF (This.Pin);
+      end if;
+      ----------------Tarald Edit End--------------------------
       CNF.DIR := (case Config.Mode is
                      when Mode_In  => Input,
                      when Mode_Out => Output);
