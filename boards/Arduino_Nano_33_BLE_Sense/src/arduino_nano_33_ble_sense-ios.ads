@@ -34,17 +34,17 @@ with nRF.GPIO; use nRF.GPIO;
 
 package Arduino_Nano_33_Ble_Sense.IOs is
 
-   type Pin_Id is range 0 .. 31;
+   type Pin_Id is range 0 .. 47;
 
    type IO_Features is (Digital, Analog);
 
    function Supports (Pin : Pin_Id; Feature : IO_Features) return Boolean is
      (case Feature is
          when Digital => (case Pin is
-                             when 0 .. 2 | 5 .. 27 => True,
+                             when 0 .. 47 => True,
                              when others           => False),
          when Analog  => (case Pin is
-                             when 3 .. 4 | 28 .. 31 => True,
+                             when 3 .. 5 | 28 .. 31 => True,
                              when others            => False));
 
    procedure DigitalWrite (Pin : Pin_Id; Value : Boolean)
@@ -53,7 +53,7 @@ package Arduino_Nano_33_Ble_Sense.IOs is
    function DigitalRead (Pin : Pin_Id) return Boolean
      with Pre => Supports (Pin, Digital);
 
-   type Analog_Value is range 0 .. 4095;
+   type Analog_Value is range 0 .. 1023;
 
    procedure Set_Analog_Period_Us (Period : Natural);
    --  Set the period (in microseconds) of the PWM signal for all analog output
@@ -102,7 +102,24 @@ private
       28 => P28,
       29 => P29,
       30 => P30,
-      31 => P31
+      31 => P31,
+      32 => P32,
+      33 => P33,
+      34 => P34,
+      35 => P35,
+      36 => P36,
+      37 => P37,
+      38 => P38,
+      39 => P39,
+      40 => P40,
+      41 => P41,
+      42 => P42,
+      43 => P43,
+      44 => P44,
+      45 => P45,
+      46 => P46,
+      47 => P47
+
      );
 
 end Arduino_Nano_33_Ble_Sense.IOs;

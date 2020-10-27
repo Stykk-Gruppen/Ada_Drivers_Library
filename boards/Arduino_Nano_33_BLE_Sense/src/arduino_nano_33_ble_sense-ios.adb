@@ -97,7 +97,6 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
    Current_Mode : array (Pin_Id) of Pin_Mode := (others => None);
 
    -- PWM --
-
    Number_Of_PWMs : constant := 3;
 
    type PWM_Allocated is range 0 .. Number_Of_PWMs;
@@ -370,7 +369,6 @@ package body Arduino_Nano_33_Ble_Sense.IOs is
       Pt   : GPIO_Point renames Points (Pin);
       Conf : GPIO_Configuration;
    begin
-
       if not Has_PWM (Pin) then
 
          --  Stop the timer while we configure a new pin

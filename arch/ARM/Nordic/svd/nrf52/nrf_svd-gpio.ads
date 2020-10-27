@@ -574,4 +574,8 @@ package NRF_SVD.GPIO is
    GPIO_Periph : aliased GPIO_Peripheral
      with Import, Address => P0_Base;
 
+   --  GPIO Port 2
+   P1_Periph : aliased GPIO_Peripheral
+     with Import, Address => P1_Base;
+
 end NRF_SVD.GPIO;

@@ -33,7 +33,7 @@ with HAL.GPIO;
 
 package nRF.GPIO is
 
-   subtype GPIO_Pin_Index is Natural range 0 .. 31;
+   subtype GPIO_Pin_Index is Natural range 0 .. 47;
 
    type Pin_IO_Modes is (Mode_In, Mode_Out);
 

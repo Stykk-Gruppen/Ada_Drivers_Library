@@ -118,5 +118,6 @@ package NRF_SVD is
    I2S_Base : constant System.Address := System'To_Address (16#40025000#);
    FPU_Base : constant System.Address := System'To_Address (16#40026000#);
    P0_Base : constant System.Address := System'To_Address (16#50000000#);
+   P1_Base : constant System.Address := System'To_Address (16#50000300#);
 
 end NRF_SVD;
